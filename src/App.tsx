@@ -1,4 +1,5 @@
-import { useState, use, Suspense, useRef, useEffect, useMemo } from 'react'
+import { useState, use, Suspense, useEffect } from 'react'
+import { motion } from "motion/react"
 
 import './Map.css'
 
@@ -34,38 +35,47 @@ function ZipCodeInput({ zipCode, setZipCode }: {
   )
 }
 
-const DEFAULT_VIEW_BOX = [0, 10, 85, 60];
+const DEFAULT_VIEW_BOX = [0, 10, 85, 60].join(" ");
 function Map({ zipCode }: { zipCode: string }) {
   const [viewBox, setViewBox] = useState(DEFAULT_VIEW_BOX)
   const statePaths = use(pathCache.get('us-states'));
-  const zipPaths = isValidZipCode(zipCode) ? use(pathCache.get(zipCode)) : [];
-
-  useEffect(() => {
-    if (zipPaths && zipPaths.length > 0) {
-      setViewBox(padBoundingBox(getBoundingBox(zipPaths)));
-    } else if (zipPaths.length === 0) {
-      setViewBox(DEFAULT_VIEW_BOX);
-    }
-  }, [zipPaths])
-
+  
   return (
-    <svg
-      viewBox={viewBox.join(' ')}
+    <motion.svg
+      animate={{viewBox}}
       width="100%"
       className='map'
+      transition={{ ease: 'circInOut', duration: 1.5 }}
     >
       {statePaths.map((path, i) => (
         <path key={i} d={path} />
       ))}
 
-      {zipPaths.map(path => <ZipPath key={path} path={path} />)}
-    </svg>
+      <Suspense>
+        <ZipCodeRegion zipCode={zipCode} setBoundingBox={setViewBox} />
+      </Suspense>
+    </motion.svg>
   )
 }
 
-function ZipPath({ path }: { path: string }) {
+function ZipCodeRegion({ zipCode, setBoundingBox }: { 
+  zipCode: string,
+  setBoundingBox: (bbox: string) => void
+}) {
+  const zipPaths = isValidZipCode(zipCode) ? use(pathCache.get(zipCode)) : [];
+
+  useEffect(() => {
+    if (zipPaths && zipPaths.length > 0) {
+      setBoundingBox(padBoundingBox(getBoundingBox(zipPaths)).join(" "));
+    } else if (zipPaths.length === 0) {
+      setBoundingBox(DEFAULT_VIEW_BOX);
+    }
+  }, [zipPaths])
+
   return (
-    <path d={path} className='selected' />
+    <>
+      {zipPaths.map(path => <path d={path} className='selected' />)}
+    </>
   )
 }
 
