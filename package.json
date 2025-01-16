@@ -13,7 +13,6 @@
   "dependencies": {
     "@linaria/core": "^6.2.0",
     "@linaria/react": "^6.2.1",
-    "@wyw-in-js/babel-preset": "^0.5.5",
     "motion": "^11.17.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
@@ -27,6 +26,7 @@
     "@types/react": "^19.0.6",
     "@types/react-dom": "^19.0.3",
     "@vitejs/plugin-react": "^4.3.4",
+    "@wyw-in-js/babel-preset": "^0.5.5",
     "@wyw-in-js/vite": "^0.5.5",
     "eslint": "^9.17.0",
     "eslint-plugin-react-hooks": "^5.0.0",

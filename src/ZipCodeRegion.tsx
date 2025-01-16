@@ -1,7 +1,15 @@
 import { use, useEffect } from "react";
+import { css } from "@linaria/core";
+
 import { isValidZipCode } from "./helpers/validations";
 import { NONE, pathCache } from "./data";
 import { DEFAULT_VIEW_BOX, getBoundingBox, padBoundingBox } from "./helpers/bounds";
+
+const zipCodePathCss = css`
+  fill: none;
+  stroke: coral;
+  stroke-width: 1px;
+`
 
 export function ZipCodeRegion({ zipCode, setBoundingBox }: { 
   zipCode: string,
@@ -19,7 +27,7 @@ export function ZipCodeRegion({ zipCode, setBoundingBox }: {
 
   return (
     <>
-      {zipPaths.map((path, i) => <path key={i} d={path} className='selected' />)}
+      {zipPaths.map((path, i) => <path key={i} d={path} className={zipCodePathCss} />)}
     </>
   )
 }
