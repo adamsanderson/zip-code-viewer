@@ -1,5 +1,5 @@
 import { Suspense, use, useState } from "react";
-import { css } from "@linaria/core";
+import { css, cx } from "@linaria/core";
 
 import { DEFAULT_VIEW_BOX } from "./helpers/bounds";
 import { pathCache } from "./data";
@@ -7,9 +7,6 @@ import { motion } from "motion/react";
 import { ZipCodeRegion } from "./ZipCodeRegion";
 
 const mapCss = css`
-  max-width: 100vw;
-  max-height: 100vh;
-
   path {
     vector-effect: non-scaling-stroke;
   }
@@ -21,7 +18,7 @@ const pathCss = css`
   stroke-width: 0.25px;
 `;
 
-export function Map({ zipCode }: { zipCode: string }) {
+export function Map({ className, zipCode }: { className?: string, zipCode: string }) {
   const [viewBox, setViewBox] = useState(DEFAULT_VIEW_BOX)
   const statePaths = use(pathCache.get('us-states'));
 
@@ -29,7 +26,7 @@ export function Map({ zipCode }: { zipCode: string }) {
     <motion.svg
       animate={{ viewBox }}
       width="100%"
-      className={mapCss}
+      className={cx(mapCss, className)}
       transition={{ ease: 'circInOut', duration: 1.5 }}
     >
       {statePaths.map((path, i) => (

@@ -64,3 +64,10 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
+/* Hide nuisance UIs */
+div[data-lastpass-icon-root],
+div[data-lastpass-infield],
+div[data-lastpass-root] {
+  display: none;
+}
