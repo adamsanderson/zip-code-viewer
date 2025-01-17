@@ -3,8 +3,9 @@ import react from '@vitejs/plugin-react'
 import wyw from '@wyw-in-js/vite';
 
 // https://vite.dev/config/
-export default defineConfig({
-  base: 'zip-code-viewer',
+export default defineConfig(({command}) => ({
+  // Set base for github pages builds, leave undefined for dev server.
+  base: command === 'build' ? 'zip-code-viewer' : undefined,
   plugins: [
     react(), 
     wyw({
@@ -14,4 +15,4 @@ export default defineConfig({
       },
     }),
   ],
-})
+}))
